@@ -5,7 +5,8 @@ import (
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 )
-func main() {
+
+func producer() {
 
 	producer, err := kafka.NewProducer(&kafka.ConfigMap{
 		"bootstrap.servers": "localhost:9093",
