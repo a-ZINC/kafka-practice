@@ -1,0 +1,94 @@
+services:
+  kafka1:
+    image: apache/kafka:latest
+    container_name: kafka1
+    ports:
+      - "9093:9093"
+      - "29092:29092"
+    volumes:
+      - ./kafka-data/kafka1:/var/lib/kafka/data
+    networks:
+      - kafka-bridge
+    environment:
+      KAFKA_BROKER_ID: 1
+      CLUSTER_ID: t7jxO1XIQwWtRhIzV5PE4w
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka1:29092,EXTERNAL://localhost:9093
+      KAFKA_LISTENERS: CONTROLLER://:9092,EXTERNAL://0.0.0.0:9093,INTERNAL://:29092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka1:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+  kafka2:
+    image: apache/kafka:latest
+    container_name: kafka2
+    ports:
+      - "9094:9093"
+    volumes:
+      - ./kafka-data/kafka2:/var/lib/kafka/data
+    networks:
+      - kafka-bridge
+    environment:
+      KAFKA_BROKER_ID: 2
+      CLUSTER_ID: t7jxO1XIQwWtRhIzV5PE4w
+      KAFKA_PROCESS_ROLES: broker
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka2:29092,EXTERNAL://localhost:9094
+      KAFKA_LISTENERS: EXTERNAL://0.0.0.0:9093,INTERNAL://:29092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka1:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+
+  kafka3:
+    image: apache/kafka:latest
+    container_name: kafka3
+    ports:
+      - "9095:9093"
+    volumes:
+      - ./kafka-data/kafka3:/var/lib/kafka/data
+    networks:
+      - kafka-bridge
+    environment:
+      KAFKA_BROKER_ID: 3
+      CLUSTER_ID: t7jxO1XIQwWtRhIzV5PE4w
+      KAFKA_PROCESS_ROLES: broker
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka3:29092,EXTERNAL://localhost:9095
+      KAFKA_LISTENERS: EXTERNAL://0.0.0.0:9093,INTERNAL://:29092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka1:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+  
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - "8000:8080"
+    networks:
+      - kafka-bridge
+    environment:
+      KAFKA_CLUSTERS_0_NAME: kafkamultinodecluster
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka1:29092,kafka2:29092,kafka3:29092"
+    depends_on:
+      - kafka2
+      - kafka3
+      - kafka1
+
+networks:
+  kafka-bridge:
+    driver: bridge
+
+volumes:
+  kafka-data:
