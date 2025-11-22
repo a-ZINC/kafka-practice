@@ -12,7 +12,7 @@ func main() {
 	
 	switch os.Args[1] {
 	case "producer":
-		producer()
+		producer(os.Args[2:])
 	case "consumer":
 		consumer()
 	default:
