@@ -13,7 +13,7 @@ __consumer_offsets 5 0
 __consumer_offsets 38 0
 __consumer_offsets 1 0
 __consumer_offsets 34 0
-bro-conf 0 0
+bro-conf 0 37
 __consumer_offsets 16 0
 __consumer_offsets 45 0
 __consumer_offsets 12 0
@@ -29,7 +29,7 @@ __consumer_offsets 8 0
 __consumer_offsets 37 0
 __consumer_offsets 4 0
 __consumer_offsets 33 0
-bro-conf 1 0
+bro-conf 1 7
 __consumer_offsets 15 0
 __consumer_offsets 48 0
 __consumer_offsets 11 0
@@ -43,7 +43,7 @@ __consumer_offsets 7 0
 __consumer_offsets 40 0
 __consumer_offsets 3 0
 __consumer_offsets 36 0
-bro-conf 2 0
+bro-conf 2 14
 __consumer_offsets 47 0
 __consumer_offsets 14 0
 __consumer_offsets 43 0
